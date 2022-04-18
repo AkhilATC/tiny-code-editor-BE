@@ -1,9 +1,6 @@
 package com.code.preprossessing;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +15,32 @@ public class codeExecutor implements Runnable{
         this.fileLoc = fileLoc;
 
     }
+    public void executeCode(StringBuilder sb){
+        try {
+            System.out.println(sb.toString());
+            Process p = Runtime.getRuntime().exec(sb.toString());
+            InputStream inputStrem = p.getInputStream();
+            BufferedReader bfReader =  new BufferedReader(new InputStreamReader(inputStrem));
+            String line;
+            while((line= bfReader.readLine())!=null){
+                this.codeOutList.add(line);
+            }
+
+            InputStream errStrem = p.getErrorStream();
+            BufferedReader errorReader =  new BufferedReader(new InputStreamReader(errStrem));
+            String each;
+            while((each= errorReader.readLine())!=null){
+                this.codeOutList.add(each);
+            }
+
+
+
+        } catch (IOException e) {
+            this.codeOutList.add("failed");
+            this.codeOutStatus = false;
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void run() {
@@ -25,28 +48,23 @@ public class codeExecutor implements Runnable{
             this.codeOutStatus = false;
             this.codeOutList.add("Failed execution");
         }
-        if(this.lang == "python"){
-            try {
-                StringBuilder sb = new StringBuilder();
-                sb.append("python3");
-                sb.append(" ");
-                sb.append(this.fileLoc);
-                System.out.println(sb);
-                Process p = Runtime.getRuntime().exec(sb.toString());
-                InputStream inputStrem = p.getInputStream();
-                BufferedReader bfReader =  new BufferedReader(new InputStreamReader(inputStrem));
-                String line;
-                while((line= bfReader.readLine())!=null){
-                    this.codeOutList.add(line);
-                }
 
-            } catch (IOException e) {
-                this.codeOutList.add("failed");
-                this.codeOutStatus = false;
-                throw new RuntimeException(e);
-            }
+        if(this.lang.equalsIgnoreCase("python")){
+            System.out.println("here im ");
+            StringBuilder sb = new StringBuilder();
+            sb.append("python3");
+            sb.append(" ");
+            sb.append(this.fileLoc);
+            executeCode(sb);
+
         }else{
-            System.out.println("dddd");
+            System.out.println(this.lang);
+            StringBuilder sb = new StringBuilder();
+            sb.append("javac ");
+            sb.append(this.fileLoc);
+            executeCode(sb);
+            //executeCode(new StringBuilder().append("java "+this.fileLoc.replace(".java","")));
+
         }
 
     }

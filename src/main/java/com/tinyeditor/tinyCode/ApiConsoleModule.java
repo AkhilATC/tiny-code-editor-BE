@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import static java.lang.Boolean.FALSE;
 
@@ -52,19 +53,20 @@ public class ApiConsoleModule {
                         ,HttpStatus.BAD_REQUEST);
 
             }else{
-                codeExecutor cExector = new codeExecutor("python3",flag);
+                codeExecutor cExector = new codeExecutor(codeInfo.get("fileFormat").toString(),flag);
                 Thread executionThread = new Thread(cExector);
                 executionThread.start();
                 executionThread.join();
-                JSONArray codeResponse = (JSONArray) cExector.codeOutList;
+                List<String> codeResponse = cExector.codeOutList;
                 response.put("output",codeResponse);
+                executionThread.stop();
             }
 
 
         }catch(Exception e){
             e.printStackTrace();
         }finally {
-            new fileWrite().trashFileFromLoc(codeInfo.get("file").toString());
+           new fileWrite().trashFileFromLoc(codeInfo.get("file").toString());
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
