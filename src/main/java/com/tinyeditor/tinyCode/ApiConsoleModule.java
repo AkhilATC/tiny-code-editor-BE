@@ -10,10 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
@@ -21,8 +20,15 @@ import static java.lang.Boolean.FALSE;
 @RestController
 public class ApiConsoleModule {
     @GetMapping("/")
-    public String indexMsg(){
-        return "Hello, user welcome to tinyCodeEditor";
+    public String indexMsg() throws IOException {
+
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        System.out.println("Current absolute path is: " + s);
+        File file = new File("./tinyCode/demo1.txt");
+        file.createNewFile();
+        System.out.println(file.exists());
+        return "Hello, user welcome to tinyCodeEditor, u are at now:".concat(s);
     }
 
 

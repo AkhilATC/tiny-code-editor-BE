@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 
 public class fileWrite {
-    //public String fileLoc = "/src/main/resources/";
+    public String fileLoc = "./tinyCode/";
 
     /**
      * InputFileStream writes to file loc
@@ -20,8 +20,8 @@ public class fileWrite {
 
         try{
             // concat local file loc with fileName
-            Path source = Paths.get(this.getClass().getResource("/").getPath());
-            String fileLoc = source.toAbsolutePath().toString()+"/";
+            //Path source = Paths.get(this.getClass().getResource("/").getPath());
+           // String fileLoc = source.toAbsolutePath().toString()+"/";
             String localFile = fileLoc.concat(fileName);
             File codeFile = new File(localFile);
             codeFile.createNewFile();
@@ -40,8 +40,8 @@ public class fileWrite {
 
     }
     public void trashFileFromLoc(String fileName){
-        Path source = Paths.get(this.getClass().getResource("/").getPath());
-        String fileLoc = source.toAbsolutePath().toString() + "/";
+        //Path source = Paths.get(this.getClass().getResource("/").getPath());
+        //String fileLoc = source.toAbsolutePath().toString() + "/";
         String localFile = fileLoc.concat(fileName);
         File isFile = new File(localFile);
         if(isFile.exists()){
