@@ -44,7 +44,7 @@ public class ApiConsoleModule {
             // payload parse error
             if(codeInfo.isEmpty() || codeString == "" || codeString == null){
                 response.put("status",FALSE);
-                response.put("message","Invalid payload");
+                response.put("output","Invalid payload");
                 return new ResponseEntity<>(
                         response
                         ,HttpStatus.BAD_REQUEST);
@@ -53,7 +53,7 @@ public class ApiConsoleModule {
             String flag = new fileWrite().fileWriteToLoc(codeStringStream,codeInfo.get("file").toString());
             if(flag==null){
                 response.put("status",FALSE);
-                response.put("message","System error");
+                response.put("output","System error");
                 return new ResponseEntity<>(
                         response
                         ,HttpStatus.BAD_REQUEST);
