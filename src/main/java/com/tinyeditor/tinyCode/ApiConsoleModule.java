@@ -50,7 +50,8 @@ public class ApiConsoleModule {
                         ,HttpStatus.BAD_REQUEST);
             }
             InputStream codeStringStream = new ByteArrayInputStream(codeString.getBytes());
-            String flag = new fileWrite().fileWriteToLoc(codeStringStream,codeInfo.get("file").toString());
+            String fileName = codeInfo.get("file").toString();
+            String flag = new fileWrite().fileWriteToLoc(codeStringStream,fileName);
             if(flag==null){
                 response.put("status",FALSE);
                 response.put("output","System error");
@@ -59,12 +60,13 @@ public class ApiConsoleModule {
                         ,HttpStatus.BAD_REQUEST);
 
             }else{
-                codeExecutor cExector = new codeExecutor(codeInfo.get("fileFormat").toString(),flag);
+                codeExecutor cExector = new codeExecutor(codeInfo.get("fileFormat").toString(),flag,fileName);
                 Thread executionThread = new Thread(cExector);
                 executionThread.start();
                 executionThread.join();
                 List<String> codeResponse = cExector.codeOutList;
                 response.put("output",codeResponse);
+                response.put("status",cExector.codeOutStatus);
                 executionThread.stop();
             }
 

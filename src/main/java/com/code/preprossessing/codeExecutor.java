@@ -8,11 +8,13 @@ public class codeExecutor implements Runnable{
 
     public List<String> codeOutList = new ArrayList<String>();
     public String lang;
+    public String fileName;
     public boolean codeOutStatus = true;
     public String fileLoc;
-    public codeExecutor(String lang,String fileLoc){
+    public codeExecutor(String lang,String fileLoc,String fileName){
         this.lang = lang;
         this.fileLoc = fileLoc;
+        this.fileName = fileName;
 
     }
     public void executeCode(StringBuilder sb){
@@ -63,7 +65,12 @@ public class codeExecutor implements Runnable{
             sb.append("javac ");
             sb.append(this.fileLoc);
             executeCode(sb);
-            //executeCode(new StringBuilder().append("java "+this.fileLoc.replace(".java","")));
+            StringBuilder runCmd = new StringBuilder();
+            runCmd.append("java -cp ./tinyCode ");
+            runCmd.append(this.fileName.replace(".java",""));
+            System.out.println("--->>>> --->>>>");
+            System.out.println(runCmd);
+            executeCode(runCmd);
 
         }
 
